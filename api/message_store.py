@@ -20,3 +20,11 @@ class MessageStore:
                 return self.messages[i]
 
         return
+
+    def delete(self, id: int):
+        messages = [m for m in self.messages if m.id != id]
+        if len(messages) == len(self.messages):
+            print('not found')
+            return
+
+        self.messages = messages

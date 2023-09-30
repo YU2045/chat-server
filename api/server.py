@@ -17,11 +17,6 @@ sio = SocketManager(app=app, cros_allowed_origins=["*"], mount_location='/')
 clients = set()
 
 
-@app.get('/healthcheck')
-def healthcheck():
-    return {"status": "ok"}
-
-
 @app.sio.event
 def connect(sid, environ, auth):
     print('connect ', sid)

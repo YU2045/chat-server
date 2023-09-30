@@ -3,11 +3,14 @@ import api.schemas.message as message_schema
 
 from ..models.message import Message
 from ..message_store import MessageStore
-import json
-import dataclasses
 
 router = APIRouter()
 store = MessageStore()
+
+
+@router.get('/healthcheck')
+async def check():
+    return {'status': 'ok'}
 
 
 @router.get('/msg')
@@ -27,7 +30,7 @@ async def add_message(message_body: message_schema.MessageAdd):
     return new_msg
 
 
-@router.put('/messages/{message_id}', response_model=None)
+@router.put('/messages/{message_id}', response_model=message_schema.MessageAddResponse)
 async def update_like(message_id: int):
     target = [m for m in store.messages if m.id == message_id]
     if target is None:
@@ -38,4 +41,4 @@ async def update_like(message_id: int):
 
 @router.delete('/messages/{message_id}', response_model=None)
 async def delete_message(message_id: int):
-    pass
+    store.delete(message_id)
